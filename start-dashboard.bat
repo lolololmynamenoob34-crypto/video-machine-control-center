@@ -24,7 +24,8 @@ if not exist "%VIDEO_MACHINE_ROOT%\.venv\Scripts\python.exe" (
 )
 cd /d "%~dp0"
 set "PYTHONDONTWRITEBYTECODE=1"
-"%VIDEO_MACHINE_ROOT%\.venv\Scripts\python.exe" -c "import ast,pathlib; ast.parse(pathlib.Path(r'%~dp0server.py').read_text(encoding='utf-8')); print('Server syntax check passed.')"
+set "DASHBOARD_SERVER=%~dp0server.py"
+"%VIDEO_MACHINE_ROOT%\.venv\Scripts\python.exe" -c "import ast,pathlib; ast.parse(pathlib.Path(r'%DASHBOARD_SERVER%').read_text(encoding='utf-8')); print('Server syntax check passed.')"
 if errorlevel 1 (
   echo ERROR: server.py has a syntax error.
   pause
