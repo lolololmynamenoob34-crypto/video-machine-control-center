@@ -227,8 +227,8 @@ class Handler(BaseHTTPRequestHandler):
         if action == "import":
             name = str(data.get("file", "")).strip()
             candidate = (VIDEO_ROOT / name).resolve()
-            if candidate.parent != VIDEO_ROOT or candidate.suffix.lower() != ".json" or not candidate.is_file():
-                return self.send_json({"ok": False, "output": f"Choose an existing .json file directly inside {VIDEO_ROOT}, e.g. batch1.json."}, 400)
+            if not candidate.is_relative_to(VIDEO_ROOT) or candidate == VIDEO_ROOT or candidate.suffix.lower() != ".json" or not candidate.is_file():
+                return self.send_json({"ok": False, "output": f"Choose an existing .json file inside {VIDEO_ROOT}, e.g. batch1.json or batches\\batch1.json."}, 400)
             return self.send_json(run_factory(["import", str(candidate)], 120))
         if action == "approve":
             if not data.get("checked"):
